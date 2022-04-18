@@ -1,19 +1,25 @@
 from flask import Flask, Response, Blueprint
 import cv2
 
-camera = cv2.VideoCapture(0)  # use 0 for web camera
+from imutils.video.pivideostream import PiVideoStream
+import imutils
+
+import time
+
+vs = PiVideoStream().start()
+time.sleep(2)
+
+
+
 app_webcam=Blueprint('webcam',__name__)
 
 def gen_frames():  # generate frame by frame from camera
-    while True:
-        # Capture frame-by-frame
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
+ while True:
+     frame = vs.read()
+    
+     ret, buffer = cv2.imencode('.jpg', frame)
+     frame = buffer.tobytes()
+     yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 
