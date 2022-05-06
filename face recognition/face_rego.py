@@ -12,7 +12,7 @@ import numpy as np
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Get a reference to webcam #0 (the default one)
-video_capture = cv2.VideoCapture(0)
+video_capture = cv2.VideoCapture('http://127.0.0.1:5000/video_feed')
 
 ido_image = face_recognition.load_image_file("face recognition/ido.jpg")
 ido_face_encoding = face_recognition.face_encodings(ido_image)[0]

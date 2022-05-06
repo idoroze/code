@@ -1,5 +1,6 @@
 from flask import request, jsonify, redirect, url_for,Blueprint
-import sqlite3
+
+from GPIO_code.stepper_function import move
 
 app_api = Blueprint('api',__name__)
 
@@ -10,9 +11,13 @@ def setVal():
         # i == 2 someone at the door
         # i == 3 auth
         # i == 4 unauth
-        i = request.form['num']
+        i = request.form['data']
         i = int(i)
         if i >= 1 and i <= 4:
+            if i==3:
+                print("moving")
+                move(spins=3)
+            
             with open('test.txt', 'w+') as db:
                 db.write(f"{i}")
                 db.close()
