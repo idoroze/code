@@ -33,3 +33,6 @@ def getVal():
         print(x)
         db.close()
         return jsonify({"data": x})
+
+
+# add section for face rego

@@ -1,8 +1,12 @@
 import RPi.GPIO as GPIO  # Import Raspberry Pi GPIO library
+import requests
+
+url = "http://127.0.0.1:5000/set_stat"
 
 
 def button_callback(channel):
-    print("Button was pushed!")
+    print('btn pushed')
+    requests.post(url, {'data': 2})
 
 
 GPIO.setmode(GPIO.BOARD)  # Use physical pin numbering

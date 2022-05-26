@@ -11,14 +11,7 @@ import MFRC522
 import signal
 
 
-
-
-
-ip = socket.gethostbtname(socket.gethostname())
-url = "http://"+str(ip)+":5000/"
-
-
-
+url = "http://127.0.0.1:5000/set_stat"
 
 
 continue_reading = True
@@ -67,7 +60,6 @@ while continue_reading:
         print(uid)
         # This is the default key for authentication
         key = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-
     ######### check if the card vaild #########
         # Select the scanned tag
         MIFAREReader.MFRC522_SelectTag(uid)
@@ -82,18 +74,19 @@ while continue_reading:
             MIFAREReader.MFRC522_StopCrypto1()
         else:
             print("Authentication error")
-
     ######### check if the card authorized #########
-    with open("GPIO/cards_id", "r") as open_file:
-        vaild_cards = []
-        for raw_vaild_card in open_file.readlines():
+        with open("GPIO_code/cards_id", "r") as open_file:
+            vaild_cards = []
+            for raw_vaild_card in open_file.readlines():
 
-            card = raw_vaild_card.split(',').pop()
-            if len(raw_vaild_card) != 4:
-                break
-            vaild_cards.append(card)
-    if uid in vaild_cards:
-        requests.post(url, {'data': 3})
-    else:
-     requests.post(url, {'data': 4})
+                card = raw_vaild_card.split(',')
+                card.pop()
 
+                if len(card) != 5:
+                    break
+                card = [int(digit) for digit in card]
+                vaild_cards.append([card])
+        if [uid] in vaild_cards:
+            requests.post(url, {'data': 3})
+        else:
+            requests.post(url, {'data': 4})
