@@ -17,6 +17,9 @@ is_init = False
 
 pins = [out1, out2, out3, out4]
 
+# 0 => door is close
+# 2 => door is open
+is_open=0
 
 def init_stepper():
     print("initiate pinout")
